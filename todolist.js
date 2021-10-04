@@ -9,7 +9,7 @@ class Todo {
 
   toString() { //overrides default .toString method
     let marker = this.isDone() ? Todo.DONE_MARKER : Todo.UNDONE_MARKER;
-    return `[${marker}] ${this.title}`;
+    return `[${marker}] ${this.getTitle()}`;
   }
 
   markDone() {
@@ -100,6 +100,49 @@ class TodoList {
     // }
     this.todos.forEach(callback);
   }
+
+  filter(callback) {
+    let selectedTodos = new TodoList(this.title);
+
+    this.forEach(todo => {
+      if (callback(todo)) {
+        selectedTodos.add(todo);
+      }
+    });
+
+    return selectedTodos;
+  }
+
+  findByTitle(title) {
+    return this.filter(todo => todo.getTitle() === title).first();
+  }
+
+  allDone() {
+    return this.filter(todo => todo.isDone())
+  }
+
+  allNotDone() {
+    return this.filter(todo => !todo.isDone())
+  }
+
+  markDone(title) {
+    let todo = this.findByTitle(title);
+    if (todo) {
+      todo.markDone();
+    }
+  }
+
+  markAllDone() {
+    this.allNotDone().forEach(todo => todo.markDone());
+  }
+
+  markAllUndone() {
+    this.allDone().forEach(todo => todo.markUndone());
+  }
+
+  toArray() {
+    return this.todos.slice();
+  }
   
   _validateIndex(index) {
     if (!(index in this.todos)) {
@@ -123,7 +166,14 @@ list.add(todo3);
 list.add(todo4);
 list.add(todo5);
 list.add(todo6);
+todo1.markDone();
+todo5.markDone();
 
-list.forEach(todo => console.log(todo.toString()));
+console.log(list);
+
+let copy = list.toArray();
+console.log(copy)
+console.log(copy === list.todos)
+
 
 
