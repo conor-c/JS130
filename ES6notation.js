@@ -206,3 +206,137 @@
 // [ one, two ] = [two, one];
 // console.log(one, two); // 2, 1
 
+// Spread Syntax & Rest Syntax
+// they both use the operator `...`
+
+// using rest syntax in array destructuring let us assign any
+// remaining variables to a (real) array
+
+// let foo = [1, 2, 3, 4, 5];
+// let [ fooOne, , fooThree, ...fooRest ] = foo;
+// console.log(fooOne); // 1
+// console.log(fooThree); // 3
+// console.log(fooRest); // [4, 5]
+
+// // notice that we used the ... operator in a context that means it is the rest syntax
+// // we can use that same operator to demonstrate spread syntax: 
+// console.log(...fooRest); // 4 5
+
+// just to clarify, the spread syntax transforms an array of elements into their individual elements
+// this is a massive time saver, and reduces possibilities of typos
+
+// without the spread operator/ or the apply method, we have to manually enter an array by selecting their indices 
+// function test(element1, element2, element3) {
+//   // console.log(element1, element2, element3);
+//   return element1 + element2 + element3;
+// }
+
+// let testData = [1, 2, 3];
+// // console.log(test(testData)); //NaN, the array gets passed into the function as the first argument, and then element2, element3 are resolved to undefined
+// // obviously an array + undefined + undefined is NaN.
+// // so we have to select the array elements we want specifically
+// // console.log(test(testData[0], testData[1], testData[2]))
+
+// // thats why the spread operator is useful
+// let sum = test(...testData); 
+// console.log(sum); // 6
+
+// // there is one other built in method that can do what we need, and thats the apply method (that can be found on any objects inheriting from function object)
+// console.log(test.apply(null, testData)); //6
+// we could use .call and pass in testData using the spread operator as well
+
+
+// if given the choice, spread operator is more straightforward and easier to use
+
+// ways to utilize spread operator
+// clone an array
+// let array = [1, 2, 3];
+// let clonedArray = [...array];
+// console.log(clonedArray); // [1, 2, 3]
+// console.log(array === clonedArray); // false
+
+// concatenate arrays together
+// let firstPart = [1, 2, 3];
+// let secondPart = [4, 5, 6];
+// let whole = [...firstPart, ...secondPart];
+// let reverseWhole = [...secondPart, ...firstPart];
+// console.log(whole); // [1, 2, 3, 4, 5, 6]
+// console.log(reverseWhole); // [4, 5, 6, 1, 2, 3]
+
+// insert an array into another array
+// let missingWords = ['name', 'is'];
+// let unfinishedSentence = ['My', ...missingWords, 'Conor'];
+// console.log(unfinishedSentence.join(' '));
+
+
+// spread Syntax with objects
+// works the same as with arrays, note that it will only enumerate over enumerable properties (duh)
+// Only returns enumerable "own" properties. It loses the objects prototype upon copy
+// clone an object
+// let foo = { bing: 1, bang: 2 };
+// let bar = { ...foo, bizz: 3 };
+// console.log(bar);
+// // bar !== foo
+
+// Spread syntax use to merge objects
+// let objPartOne = { qux: 1, baz: 2 };
+// let objPartTwo = { foo: 3, bar: 4 };
+// let wholeObject = { ...objPartOne, ...objPartTwo };
+// console.log(wholeObject);
+
+// Rest Syntax (...)
+// Kind of like the opposite of the spread syntax, instead of expanding an array into individual
+// items, it takes multiple items and puts it into an array or object
+
+// The rest syntax can be used in all sorts of ways
+// can be combined with an array destructure 
+// let foo = [1, 2, 3];
+// let [ bar, ...twoAndThree] = foo;
+// console.log(bar); // 1
+// console.log(twoAndThree); // [2, 3]
+// twoAndThree used the rest syntax to collect the rest of the elements in foo
+
+// the rest syntax must be the last element in a destructure or in the parameters
+
+// rest syntax can be used with objects as well
+
+// let foo = {bar: 1, qux: 2, baz: 3, xyz: 4};
+// let { bar, baz, ...restOfProperties } = foo;
+// console.log(bar); // 1
+// console.log(baz); // 3
+// console.log(restOfProperties); // { qux: 2, xyz: 4 }
+// // again, take note that object destructuring does not care about property order like arrays
+// it looks up based on property name
+
+// rest syntax is most commonly used when working with functions that don't have a set amount of arguments
+// without rest syntax, we'd have to rely on an array method .call whenever we wanted to use any built in 
+// array features because the arguments object is an array-like object
+// combine that with the aspect of not having parameter names on functions that rely on arbitrary parameter
+// counts, the rest syntax ends up providing significant readability gains
+
+// without rest syntax
+
+// function findLargestNumber() {
+//   let largestNumber = arguments[0];
+//   Array.prototype.forEach.call(arguments, number => {
+//     if (number > largestNumber) {
+//       largestNumber = number;
+//     }
+//   });
+
+//   return largestNumber;
+// }
+
+// with rest Syntax
+
+// function findLargestNumber(...numbers) {
+//   let largestNumber = numbers[0];
+//   numbers.forEach(number => {
+//     if (number > largestNumber) {
+//       largestNumber = number;
+//     }
+//   });
+
+//   return largestNumber;
+// }
+// console.log(findLargestNumber(1, 2, 3, 4, 2)); // 4
