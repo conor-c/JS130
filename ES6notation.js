@@ -329,14 +329,14 @@
 
 // with rest Syntax
 
-// function findLargestNumber(...numbers) {
-//   let largestNumber = numbers[0];
-//   numbers.forEach(number => {
-//     if (number > largestNumber) {
-//       largestNumber = number;
-//     }
-//   });
+function findLargestNumber(...numbers) {
+  let largestNumber = numbers[0];
+  numbers.forEach(number => {
+    if (number > largestNumber) {
+      largestNumber = number;
+    }
+  });
 
-//   return largestNumber;
-// }
+  return largestNumber;
+}
 // console.log(findLargestNumber(1, 2, 3, 4, 2)); // 4
