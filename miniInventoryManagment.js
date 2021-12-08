@@ -219,23 +219,21 @@ console.log(ItemManager.items());
 // ReportManager.reportInStock();
 // //end self test
 
+
+// TESTS
 ReportManager.init(ItemManager);
 // logs soccer ball,football,kitchen pot
 ReportManager.reportInStock();
-
 ItemManager.update('SOCSP', { quantity: 0 });
 // returns list with the item objects for football and kitchen pot
 console.log(ItemManager.inStock());
 // football,kitchen pot
 ReportManager.reportInStock();
-
 // returns list with the item objects for basket ball, soccer ball, and football
 console.log(ItemManager.itemsInCategory('sports'));
-
 ItemManager.delete('SOCSP');
 // returns list the remaining 3 valid items (soccer ball is removed from the list)
 ItemManager.items;
-
 let kitchenPotReporter = ReportManager.createReporter('KITCO');
 kitchenPotReporter.itemInfo();
 // logs
@@ -243,7 +241,6 @@ kitchenPotReporter.itemInfo();
 // itemName: kitchen pot
 // category: cooking
 // quantity: 3
-
 ItemManager.update('KITCO', { quantity: 10 });
 kitchenPotReporter.itemInfo();
 // logs
