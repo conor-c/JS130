@@ -64,8 +64,76 @@ describe("TodoList", () => {
 
   test("itemAt() returns the item at specified index, throws error if index is wrong", () => {
     expect(list.itemAt(0)).toBe(todo1);
+    expect(list.itemAt(2)).toBe(todo3);
     expect(() => list.itemAt(3)).toThrow(ReferenceError);
-  })
+  });
+
+  test("markDoneAt marks the correct todo as done, throws referenceError if index is undefined", () => {
+    list.markDoneAt(1);
+    expect(todo1.isDone()).toBe(false);
+    expect(todo2.isDone()).toBe(true);
+    expect(todo3.isDone()).toBe(false);
+
+
+    expect(() => list.markDoneAt(5)).toThrow(ReferenceError);
+  });
+
+  test("markUndoneAt unmarks the correct todo, throws refError if index is undefined", () => {
+    expect(() => list.markUndoneAt(4)).toThrow(ReferenceError);
+
+    list.markDoneAt(1);
+    expect(todo1.isDone()).toBe(false);
+    expect(todo2.isDone()).toBe(true);
+    expect(todo3.isDone()).toBe(false);
+
+    list.markUndoneAt(1);
+    expect(todo1.isDone()).toBe(false);
+    expect(todo2.isDone()).toBe(false);
+    expect(todo3.isDone()).toBe(false);
+  });
+
+  test("markAllDone marks every todo on the list as done", () => {
+    list.markAllDone();
+    expect(todo1.isDone()).toBe(true);
+    expect(todo2.isDone()).toBe(true);
+    expect(todo3.isDone()).toBe(true);
+    expect(list.isDone()).toBe(true);
+  });
+
+  test("removeAt removes a todo at specified index, throws ref if index isn't found", () => {
+    expect(() => list.removeAt(6)).toThrow(ReferenceError);
+
+    list.removeAt(1);
+    expect(list.toArray()).toEqual([todo1, todo3]);
+  });
+
+  test("toString returns a string representation of the list", () => {
+    let expectedString1 = `---- Today's Todos ----\n[ ] Buy milk\n[ ] Clean room\n[ ] Go to the gym`;
+    expect(list.toString()).toBe(expectedString1);
+
+    list.markDoneAt(1);
+    let expectedString2 = `---- Today's Todos ----\n[ ] Buy milk\n[X] Clean room\n[ ] Go to the gym`;
+    expect(list.toString()).toBe(expectedString2);
+
+    let expectedString3 = `---- Today's Todos ----\n[X] Buy milk\n[X] Clean room\n[X] Go to the gym`;
+    list.markAllDone();
+    expect(list.toString()).toBe(expectedString3);
+  });
+
+  test("forEach iterated over all elements in the list", () => {
+    let values = [];
+    list.forEach(todo => values.push(todo));
+    expect(values).toEqual([todo1, todo2, todo3]);
+  });
+
+  test("filter returns a new todoList of selected todos", () => {
+    list.markDoneAt(1);
+    let filteredTodo = list.filter(todo => todo.isDone());
+
+    expect(filteredTodo).toBeInstanceOf(TodoList);
+    expect(filteredTodo).not.toBe(list);
+    expect(filteredTodo.toArray()).toEqual([todo2]);
+  });
 });
 
 describe("Todo", () => {
