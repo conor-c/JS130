@@ -51,9 +51,23 @@ describe("TodoList", () => {
     todo3.markDone();
 
     expect(list.isDone()).toBe(true);
+  });
+
+  test("TypeError when adding non Todo objects", () => {
+    let fakeTodo = {};
+    let newTodo = new TodoList('test');
+    expect(() => list.add(fakeTodo)).toThrow(TypeError);
+    expect(() => list.add(1)).toThrow(TypeError);
+    expect(() => list.add('test')).toThrow(TypeError);
+    expect(() => list.add(newTodo)).toThrow(TypeError);
+  });
+
+  test("itemAt() returns the item at specified index, throws error if index is wrong", () => {
+    expect(list.itemAt(0)).toBe(todo1);
+    expect(() => list.itemAt(3)).toThrow(ReferenceError);
   })
 });
 
 describe("Todo", () => {
-
+  
 });
