@@ -100,6 +100,15 @@ Special Characters can get a little more complex as some special characters have
         - `[\+\*]` works as well
 
 #### Range of Characters
-- natural sequences of characters can be search for.
+- natural sequences of characters can be searched for.
   - sequences like letters a through z `/[a-z]/`
   - integers 1 through 9 `/[1-9]/`
+  - You can also concatenate the ranges, for example:
+    - `/[0-9A-Fa-f]/` would match any string with an integer 0-9 or a letter a-f regardless of case.
+  - Keep in mind to only use ranges with alphanumeric characters, and to not mix upper and lowercase ranges
+
+#### Negated Classes
+- You can prepend a ^ (caret) inside a character class to match with all characters that are *not* the specified character.
+  - `/[^y]/` would match any character that is not a lowercase 'y'
+  - Note that caret has different behaviors depending on if it's inside a character class or outside. (in both instances it must come before the characters).
+  - Emphasis on the caret matching ANY character as long as it's not the specified characters
