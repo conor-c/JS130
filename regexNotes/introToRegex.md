@@ -112,3 +112,8 @@ Special Characters can get a little more complex as some special characters have
   - `/[^y]/` would match any character that is not a lowercase 'y'
   - Note that caret has different behaviors depending on if it's inside a character class or outside. (in both instances it must come before the characters).
   - Emphasis on the caret matching ANY character as long as it's not the specified characters
+
+#### Capture Groups and String Transformation
+- capture groups are created using () (parentheses), the first pair will be 1, second pair 2 (till 9)
+  - if inside regex, the capture group is referenced by a forward slash and it's number ex: \1
+  - if outside regex and used in an argument such as with .replace(regex, stringToReplaceWith), it is used with a $1 to reference the capture group
