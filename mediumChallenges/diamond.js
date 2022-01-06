@@ -46,12 +46,6 @@ let Diamond = (() => {
     Z: 49,
   }
 
-  // const Alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-  // function determineInnerSpaces(letter) {
-  //   if 
-  // }
-  
   function createRow(letter) {
     return letter === 'A' ? 'A' : letter + ' '.repeat(InnerSpaceValues[letter]) + letter;
   }
