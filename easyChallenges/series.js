@@ -23,31 +23,35 @@
 // 4. if at any point it can't be, return the results array
 
 let Series = (() => {
+  function validateSeries(length, maxLength) {
+    if (length > maxLength) {
+      throw new Error("Provided length exceeds number sequences length")
+    };
+  }
+
   return class Series {
     constructor(numStr) {
-      this.numSequence = numStr //.split('').map(str => parseInt(str, 10));
+      this.numSequence = numStr;
     }
 
     slices(givenLength) {
-      if (givenLength > this.numSequence.length) throw new Error("Provided length exceeds number sequences length");
+      validateSeries(givenLength, this.numSequence.length);
 
+      let digits = this.numSequence.split('').map(str => parseInt(str, 10));
       let numSeries = [];
-      for (let idx = 0; idx < this.numSequence.length; idx += 1) {
-        let endIdx = idx + givenLength; 
-        if (endIdx > this.numSequence.length) break;
+      let maxStartIdx = this.numSequence.length - givenLength; // if numStr is 5 length, and givenLength is 3,
+                                                        // maxStartIdx would be 2 (element 3) (inclusive with slice) so theres
+                                                        // still enough indices left. elements: 3, 4, 5 (aka length 3)
 
-        let subSeries = this.numSequence.substring(idx, endIdx);
-        if (subSeries.length === givenLength) {
-          numSeries.push(subSeries.split('').map(str => parseInt(str, 10)));
-        }
+      for (let idx = 0; idx <= maxStartIdx; idx += 1) {
+        let endIdx = idx + givenLength; 
+        let subSeries = digits.slice(idx, endIdx);
+        numSeries.push(subSeries);
       }
 
       return numSeries;
     }
   }
 })();
-
-// let test = new Series('01234');
-// console.log(test);
-// console.log(test.slices(5));
+ 
 module.exports = Series;
