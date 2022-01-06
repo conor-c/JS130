@@ -57,29 +57,23 @@ let Diamond = (() => {
       let middleRow = [Object.entries(lineValues)[maxIdx]];
       let bottomRows = topRows.slice().reverse();
   
-      let diamond = [...topRows, ...middleRow, ...bottomRows];
-      diamond = diamond.map(ltrArr => {
-        if (ltrArr[0] === ltr) {
-          return ltrArr[0] + ' '.repeat(ltrArr[1]) + ltrArr[0] + '\n';
-        } else if (ltrArr[0] === 'A') {
-          let outsideSpace = (maxLength - 1) / 2;
-          return ' '.repeat(outsideSpace) + ltrArr[0] + ' '.repeat(outsideSpace) + '\n';
-        } else {
-          let outsideSpace = (maxLength - (2 + ltrArr[1])) / 2;
-          return ' '.repeat(outsideSpace) + ltrArr[0] + ' '.repeat(ltrArr[1]) + ltrArr[0] + ' '.repeat(outsideSpace) + '\n';
+      return [...topRows, ...middleRow, ...bottomRows].map(ltrArr => {
+        let outsideNum;
+        let letter = ltrArr[0];
+        let insideNum = ltrArr[1];
+        switch (ltrArr[0]) {
+          case ltr:
+            return `${letter}${' '.repeat(insideNum)}${letter}\n`;
+          case 'A':
+            outsideNum = (maxLength - 1) / 2;
+            return `${' '.repeat(outsideNum)}${letter}${' '.repeat(outsideNum)}\n`
+          default:
+            outsideNum = (maxLength - (2 + insideNum)) / 2;
+            return `${' '.repeat(outsideNum)}${letter}${' '.repeat(insideNum)}${letter}${' '.repeat(outsideNum)}\n`;
         }
-      })
-
-      return diamond.join('');
-  
-  
-      // console.log(topRows);
-      // console.log(middleRow);
-      // console.log(bottomRows);
-      // console.log(diamond)
+      }).join('');
     }
   }
 })();
 
-console.log(Diamond.makeDiamond('G'))
 module.exports = Diamond;
