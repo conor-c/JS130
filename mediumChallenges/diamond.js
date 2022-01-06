@@ -37,7 +37,7 @@
 // just keep in mind the letters take up two spaces
 
 let Diamond = (() => {
-  let lineValues = {
+  const InnerSpaceValues = {
     A: 0, B: 1, C: 3, D: 5, E: 7,
     F: 9, G: 11, H: 13, I: 15, J: 17,
     K: 19, L: 21, M: 23, N: 25, O: 27,
@@ -45,32 +45,33 @@ let Diamond = (() => {
     U: 39, V: 41, W: 43, X: 45, Y: 47,
     Z: 49,
   }
+
+  // const Alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+  // function determineInnerSpaces(letter) {
+  //   if 
+  // }
   
+  function createRow(letter) {
+    return letter === 'A' ? 'A' : letter + ' '.repeat(InnerSpaceValues[letter]) + letter;
+  }
+
+  function centerRow(row, maxDiamondWidth) {
+    let padding = (maxDiamondWidth - row.length) / 2;
+    return ' '.repeat(padding) + row + ' '.repeat(padding);
+  }
   
   return class Diamond {
     static makeDiamond(ltr) {
-      if (ltr === 'A') return 'A\n';
-      let maxLength = lineValues[ltr] + 2;
-      let maxIdx = Object.entries(lineValues).findIndex(arr => arr[0] === ltr);
+      let maxDiamondWidth = InnerSpaceValues[ltr] + 2;
+      let maxIdx = Object.entries(InnerSpaceValues).findIndex(arr => arr[0] === ltr);
   
-      let topRows = Object.entries(lineValues).slice(0, maxIdx);
-      let middleRow = [Object.entries(lineValues)[maxIdx]];
+      let topRows = Object.entries(InnerSpaceValues).slice(0, maxIdx);
+      let middleRow = [Object.entries(InnerSpaceValues)[maxIdx]];
       let bottomRows = topRows.slice().reverse();
   
       return [...topRows, ...middleRow, ...bottomRows].map(ltrArr => {
-        let outsideNum;
-        let letter = ltrArr[0];
-        let insideNum = ltrArr[1];
-        switch (ltrArr[0]) {
-          case ltr:
-            return `${letter}${' '.repeat(insideNum)}${letter}\n`;
-          case 'A':
-            outsideNum = (maxLength - 1) / 2;
-            return `${' '.repeat(outsideNum)}${letter}${' '.repeat(outsideNum)}\n`
-          default:
-            outsideNum = (maxLength - (2 + insideNum)) / 2;
-            return `${' '.repeat(outsideNum)}${letter}${' '.repeat(insideNum)}${letter}${' '.repeat(outsideNum)}\n`;
-        }
+        return centerRow(createRow(ltrArr[0]), maxDiamondWidth) + '\n';
       }).join('');
     }
   }
