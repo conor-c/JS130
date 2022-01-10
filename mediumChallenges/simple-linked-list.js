@@ -129,8 +129,6 @@ class SimpleLinkedList {
   }
 
   toArray() {
-      
-    // STUB
     let arr = [];
     let node = this.head();
 
@@ -140,10 +138,6 @@ class SimpleLinkedList {
     }
 
     return arr;
-    //    convert the linked list into an array,
-    //    if where the head is the first element, and the tail is the last element
-    //    (O(n) time)
-    //    return array
   }
 
 
@@ -162,21 +156,14 @@ class SimpleLinkedList {
   reverse() {
     let reversedList = new SimpleLinkedList();
     let node = this.head();
+
     while (node) {
       reversedList.push(node.datum());
       node = node.next();
     }
+
     return reversedList;
-    //    since they don't need to be the same object
-    //    create a new simpleLinkedList
-    //     push the head from the old list
-    //      push the next link from the head (which becomes the new head)
-    //        continue until you reach the tail which won't have a link to another element
-    //        now the tail is the new head for the new list
   }
 }
 
 module.exports = { Element, SimpleLinkedList };
-
-let list = SimpleLinkedList.fromArray([1]);
-console.log(list.toArray())
