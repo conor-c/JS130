@@ -129,7 +129,17 @@ class SimpleLinkedList {
   }
 
   toArray() {
+      
     // STUB
+    let arr = [];
+    let node = this.head();
+
+    while (node) {
+      arr.push(node.datum());
+      node = node.next();
+    }
+
+    return arr;
     //    convert the linked list into an array,
     //    if where the head is the first element, and the tail is the last element
     //    (O(n) time)
@@ -137,18 +147,26 @@ class SimpleLinkedList {
   }
 
 
- static fromArray(array) {
-    //    return a instance of SimpleLinkedList constructed from the argument array
-    //    if arg is null, still run
-    //    iterate the array starting from the last element
-    //    ex: [1, 2, 3]
-    //    .push(3) // new head
-    //    .push(2) // new head
-    //    .push(1) // new head
-    //    1 would be the head, 3 would be the tail
+  static fromArray(array) {
+    let newList = new SimpleLinkedList();
+
+    if (Array.isArray(array)) {
+      for (let idx = array.length - 1; idx >= 0; idx -= 1) {
+        newList.push(array[idx]);
+      }
+    }
+
+    return newList;
   }
 
   reverse() {
+    let reversedList = new SimpleLinkedList();
+    let node = this.head();
+    while (node) {
+      reversedList.push(node.datum());
+      node = node.next();
+    }
+    return reversedList;
     //    since they don't need to be the same object
     //    create a new simpleLinkedList
     //     push the head from the old list
@@ -160,8 +178,5 @@ class SimpleLinkedList {
 
 module.exports = { Element, SimpleLinkedList };
 
-let testElement1 = new Element(1);
-console.log(testElement1.next())
-// let testList = new SimpleLinkedList().size();
-// console.log(testElement1);
-// console.log(testList);
+let list = SimpleLinkedList.fromArray([1]);
+console.log(list.toArray())

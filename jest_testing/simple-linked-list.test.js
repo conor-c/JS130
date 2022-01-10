@@ -109,27 +109,27 @@ describe("Simple Linked List", () => {
     expect(list.peek()).toBe(4);
   });
 
-  xtest("from a: empty array", () => {
+  test("from a: empty array", () => {
     let list = SimpleLinkedList.fromArray([]);
 
     expect(list.size()).toBe(0);
     expect(list.peek()).toBe(null);
   });
 
-  xtest("from a: null", () => {
+  test("from a: null", () => {
     let list = SimpleLinkedList.fromArray(null);
     expect(list.size()).toBe(0);
     expect(list.peek()).toBe(null);
   });
 
-  xtest("from a: 2 element array", () => {
+  test("from a: 2 element array", () => {
     let list = SimpleLinkedList.fromArray([1, 2]);
     expect(list.size()).toBe(2);
     expect(list.head().datum()).toBe(1);
     expect(list.head().next().datum()).toBe(2);
   });
 
-  xtest("from a: 10 item array", () => {
+  test("from a: 10 item array", () => {
     let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     let list = SimpleLinkedList.fromArray(arr);
     expect(list.size()).toBe(10);
@@ -138,22 +138,22 @@ describe("Simple Linked List", () => {
       .next().next().next().next().next().datum()).toBe(10);
   });
 
-  xtest("to a: empty list", () => {
+  test("to a: empty list", () => {
     let list = new SimpleLinkedList();
     expect(list.toArray()).toEqual([]);
   });
 
-  xtest("to a: of 1 element list ", () => {
+  test("to a: of 1 element list ", () => {
     let list = SimpleLinkedList.fromArray([1]).toArray();
     expect(list).toEqual([1]);
   });
 
-  xtest("to a: of a 2 element list", () => {
+  test("to a: of a 2 element list", () => {
     let list = SimpleLinkedList.fromArray([1, 2]).toArray();
     expect(list).toEqual([1, 2]);
   });
 
-  xtest("reverse 2 element list", () => {
+  test("reverse 2 element list", () => {
     let list = SimpleLinkedList.fromArray([1, 2]);
     // reversedList and list need not be the same object
     let reversedList = list.reverse();
@@ -163,13 +163,13 @@ describe("Simple Linked List", () => {
     expect(reversedList.head().next().isTail()).toBe(true);
   });
 
-  xtest("reverse 10 element list", () => {
+  test("reverse 10 element list", () => {
     let data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     let list = SimpleLinkedList.fromArray(data);
     expect(data.reverse()).toEqual(list.reverse().toArray());
   });
 
-  xtest("roundtrip 10 element array", () => {
+  test("roundtrip 10 element array", () => {
     let data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     let list = SimpleLinkedList.fromArray(data).toArray();
     expect(list).toEqual(data);
