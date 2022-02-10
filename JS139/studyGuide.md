@@ -1,0 +1,291 @@
+# JavaScript Topics
+
+  - ## Hoisting
+    - https://launchschool.com/lessons/43f23069/assignments/575fa64d
+      - Scope can often be described by talking about hoisting
+      - The main things to keep in mind when programing are the effects that `function declarations` and `var` statements have in regards to hoisting.
+      - JS engines operate in two main phases:
+        - **creation phase** ((sometimes called the compilation phase))
+          - Occurs before the *execution phase*, is responsible for finding all of the **variable, function, and class *declarations***.
+          - When it finds them, it records their name, and **designates** their scope.
+        - **execution phase**
+          - What occurs when the program begins to run line-by-line.
+          - At this stage, JS knows what variables exist, and what scope they have.
+      - ### **Hoisting:**
+          - **function-scoped** declarations are moved (made available) to the beginning of the function
+            - Includes:
+              - `function declarations`, including their function body
+                - Avoid nesting function declarations inside non=-function blocks (if needed, use a function expression)
+              - `var` declared variables, set with a value of 'undefined'
+          - **block-scoped** declarations are moved (made available) to the start of the block
+            - Includes:
+              - `let` & `const` declared variables, "unset" or "not defined"
+              - `class declarations` names get hoisted, but they are "unset"
+        - **function expressions** are obey the hoisting rules for whichever variable declaration was used. (var == undefined) (let & const == TDZ)
+        - ### **Temporal Dead Zone**
+          - `class declarations` & `let` & `const` variables are hoisted, but are "unset" aka "not defined". These "unset" variables are said to be in the **TDZ** until the initialization code occurs during the **execution phase**.
+            - Attempting to access a let or const variable that is "unset" will throw a **ReferenceError**
+        - **var declarations and function declarations with the same name**
+          - In the event that a variable declared with var, and a function declaration use the same *identifier*:
+            - Function declaration gets hoisted to the top of the function-scope & the variable declaration gets discarded (not the initialization).
+    - https://launchschool.com/lessons/43f23069/assignments/39f50f91
+  - The var statement
+    - https://launchschool.com/lessons/43f23069/assignments/3929ff47
+      - When used at the top level of a program, it will create a property on the global object
+        - (`global` in node, `window` in browser)
+      - It is function scoped, compared to `let` and `const` being block scoped
+        - When hoisted, it will be initialized with a value of undefined.
+        - block scoped variables are only visible within the block it was declared
+        - function scoped variables are visible anywhere within the function they were declared.
+      - A "block" is defined as executable code between braces
+        - this includes function bodies (though not technically a block)
+        - this does not include object literals!
+  - Strict mode
+    - https://launchschool.com/lessons/43f23069/assignments/0be5a7bd
+      - *What is strict mode?*
+        - Makes the following "silent errors" throw instead:
+          - 1. assigning an undeclared variable a value will throw an error instead of creating a property on the global object.
+          - 2. Octal literals are not allowed, and numbers can't begin with zero except for zero itself and zeros with a decimal.
+          - 3. now allows to have function parameters with duplicate names
+          - 4. can't use reserved keywords as variable names
+          - 5. can't use delete operator on a variable name
+          - 6. can't bind `eval` and `arguments` in any way
+          - 7. disables access to some properties of the `arguments` object in functions
+          - 8. disables `with` statement
+      - *How does it differ from sloppy mode?*
+        - Sets the *implicit execution context* for function invocations to **undefined**, instead of the **global object**
+      - *How do you enable strict mode at the global or function level?*
+        - at the beginning of the program or function definition type:
+          - `"use strict";` or `'use strict';`
+          - this statement is an example of a `pragma`
+            - a language construct that informs the compiler/interpreter to process the code in a non-standard way.
+      - *How does code behave under strict mode and sloppy mode?*
+        - strict mode is **lexically scoped**
+          - if a sloppy function invokes a strict function, the call is sloppy, but the strict function runs in strict, the inverse holds true.
+      - *When is strict mode enabled automatically?*
+        - strict mode is enabled automatically within the body of a `class`, or with JS modules.
+      - *When should you use (or not) strict mode?*
+        - Use strict mode in any new code.
+  - Closures, scope, and private data
+    - https://launchschool.com/lessons/43f23069/assignments/ada4d164
+      - **Scope**
+        - *Declared Scope*
+          - How an identifier is declared determines it's declared scope.
+          - **Function & Block Scope relating to Declared Scope**
+            - `let` `const` `class` declares identifiers in "block-scope"
+            - `var` `function` declares identifiers in "function-scope"
+        - *Visibility Scope*
+          - Where an identifier is available for use by the program.
+            - Either global scope, or local scope.
+          - **Function & Block Scope relating to Visibility Scope**
+        - *Lexical Scope*
+          - Where identifiers are declared in relation to each-other, and the program at large. Lexical scope refers to "inner" and "outer" scopes.
+          - *functions are available in the "inner scope" of themselves. (thats why recursion can work);
+        - Global Scope
+          - Identifiers are global when they are available throughout a program
+        - Local Scope
+          - Identifiers can be local to a function, or to a block.
+    - https://launchschool.com/lessons/43f23069/assignments/4d87c212
+      - **Closures** - great for creating 'private' variables
+        - Allows a function to access a variable that was lexically in scope at the function's definition, even if that variable is no longer in scope.
+        - Based on the codes *structure*, not how the code is executed.
+        - Determined at the **creation phase** not the **execution phase**
+        - What is a closure?
+          - A closure is a combo of a function and it's lexical environment where that function was defined.
+        - What is in a closure?
+          - A function combined with any variables that function used a the point of it's definition. "the function definition and all the identifiers in its lexical scope (that the function uses)"
+            - **The identifiers themselves are what are closed around, not their values.**
+        - When is a closure created?
+          - A closure is created when a function or method is defined. (During the creation phase) 
+          - Note that closures are formed before any function executions, and are purely lexical.
+        - What is the relationship between closures and scope?
+          - Closures are based around a function and it's lexical scoping (lexical environment).
+        - What do we mean when we say that closures are defined lexically?
+          - That the identifiers included in a functions closure are directly related to the surrounding scope that the function has access to. (the functions lexical scope)
+      - **When a function encounters an identifier during execution, it looks inside its local scope to find the definition, if it can't find it locally, it will look inside the functions closure**
+      - **variables are only accessible by a function if they were in scope when the function was defined. If they weren't in scope when the function was defined, they weren't included in the closure, and they cannot be accessed.**
+      - **callback functions are passed in with closures**
+        - Functions are first-class values in JS, this means they can be passed into, and return from, other functions.
+        - **built in methods invoke a callback function somewhere else, but can still access the callback functions lexical environment due to the fact that the callback function includes its closure**
+    - https://launchschool.com/lessons/43f23069/assignments/9362d2cf
+    - https://launchschool.com/lessons/43f23069/assignments/3df10c91
+      - **Private Data**
+        - Private data is useful for ensuring that users of the program interact with methods/functions through the provided API instead of how the backend operates, and in doing so, do not become reliant on the implementation of the method/functions.
+        - **Helps keep data integrity of collections, allows a developer to change implementation of the program, but have the API be the same**
+        - Be aware of accidentally returning references to data that can be manipulated
+        - Private Data does not keep data "secret", encryption is the only tool for that.
+  - Partial function application
+    - https://launchschool.com/lessons/43f23069/assignments/4d87c212
+    - a function that can call a second function with fewer arguments than the second function expects. The created function applies the remaining arguments. 
+    - "requires a reduction in the **number of arguments** you have to provide when you call a function"
+    - Useful when you need to pass a function to another function, that wouldn't call the passed function with enough arguments.
+      - Instead you can pass in a partial function application function, that "pre-passes" the remaining arguments.
+    - .bind() is a great way to accomplish partial function application, as it returns a function that is bound with the supplied execution context AND arguments.
+  - IIFEs
+    - https://launchschool.com/lessons/43f23069/assignments/acf35c08
+      - A function that is defined and invoked simultaneously.
+      - **Useful for creating private scopes & private data (encapsulation through closures**
+        - Keeps the global name space from duplicates
+        - prevents possible errors that could occur with overwriting variables
+      - ES6 allows the use of blocks for private scopes
+        - wrap the function in () and call after
+        - *technically only function declarations require being wrapped in parentheses*
+        - `(function() {})();`
+        - remember that parentheses () don't change values, they act as a grouping control (they control the order of how an expression is evaluated)
+    - https://launchschool.com/lessons/43f23069/assignments/69bab49c
+  - Shorthand notation (understanding, not using)
+    - https://launchschool.com/lessons/43f23069/assignments/684b70a9
+      - **concise property initialization**, can use the name of the parameter variable and it will initialize a property with that name, and the passed in value.
+      - **concise method notation**, can eliminate the : and the word `function` when creating methods of objects
+      - **object destructuring**, can destructure an object that will search by property name, can even search for value, and assign it to a new identifier name. `let { objProp: newName } = obj` would search the obj object for a property named "objProp" and if found, would assign that value to the variable "newName"
+        - Also works for function parameters. `function test({ objProp1, objProp2 }) {}` would create two arguments that were found from the passed in obj argument `test(obj)`.
+        - **object destructuring without declarations (assignment)**, you can do this, but you should wrap the expression in parentheses otherwise the brackets may be considered a block. `({ foo, bar } = obj)` 
+      - **Array destructuring is similar**, but it searches in order, not by property name.
+        - **You can use rest syntax (...) if you want the rest of the array in one variable**
+        - **skipping elements in array destructuring requires the comma to indicate an absence**
+      - **spread operator**, used to pass an array as individual elements
+        - largely replaces the .apply() method
+        - useful for cloning arrays, be aware of pass by references
+        - useful for concatenating arrays together, or inserting one array into another array
+        - **can be used with objects as well as arrays**, but note that spread operator only returns enumerable "own" properties.
+          - not the right choice when needing to duplicate objects that inherit from other objects. (you lose the object prototype)
+          - Also if the property name already exists, its value will get replaced with the newly "spread" value.
+      - **rest operator**, used to take multiple values and store them inside an array, or inside an object if used with object destructuring
+        - either way, the rest operator bust be the last item in any expression
+        - **very useful as a replacement for the `arguments` object**, as the returned array inherits from the Array constructor and has access to all of it's methods without the use of having to perform a .call on Array
+    - https://launchschool.com/lessons/43f23069/assignments/c6c682cd
+  - Modules (CommonJS)
+    - https://launchschool.com/lessons/43f23069/assignments/d6ad4da8
+      - CommonJS modules are Node modules, they are synchronous in nature, you can use a module loader (like requireJS), to emulate JS modules which are a-sync
+      - Pros:
+        - Splits a program into smaller self-contained pieces
+          - easier to understand the components
+          - less dependency issues through the use of encapsulation
+          - has private data inherently
+          - easier to reuse code
+      - Cons:
+        - Not suitable for browsers due to their synchronous nature, only suitable locally because everything required resides on the same machine.
+      - CommonJS module syntax
+        - Importing:
+          - `require('/path/to/file.js')` (and assign that value to a variable)
+            - if importing a package installed through npm, you just need to require the name most of the time.
+        - Exporting:
+          - `module.exports = aFunction;` or `module.exports = {many, functions};` at the end of the program file.
+          - Keep in mind when exporting an object, the importing file will be importing an object, you can use object destructuring, or simply call that identifier with the method names.
+          - You can export any value you want from a module. (functions, constants, variables, and classes)
+        - **All code in node is part of a CommonJS module, this includes the main program file**
+          - thus the following variables are available:
+            - `module`: an object that represents the current module
+            - `exports`: the name(s) exported by the module (same as module.exports)
+            - `require(moduleName)`: the function that loads a module
+            - `__dirname`: the absolute pathname of the directory that contains the module
+            - `__filename`: the absolute pathname of the file that contains the module
+
+  - Exceptions
+    - https://launchschool.com/lessons/43f23069/assignments/5bf59572
+      - By default exceptions terminate a program with an error message
+        - if you have code that can potentially throw an exception, you can utilize a try/catch block in order to deal with an exception
+      - In general:
+        - Avoid catching exceptions if you don't have a specific reason to
+        - It's better to let a program terminate than continue without dealing with an exception
+        - **Exceptions should be used to handle *exceptional* conditions, not normal or *expected* conditions.**
+        - Exception handlers should do as little as possible:
+          - Ignore the exception
+          - Return an error value to the calling function
+          - set a flag that the program can test after the handler finishes
+          - log a simple error message
+          - throw another exception with a throw statement
+          - **DONT DO ANYTHING THAT COULD ACCIDENTALLY THROW AN EXCEPTION**
+      - Exceptions typically are an Error type, or they inherit from the Error constructor. ReferenceError for example.
+      - *It is easy to create your own error type by creating a class that extends from Error*
+      - **Path of an exception**
+        - exception gets thrown
+        - goes back to see if the exception was thrown in a try block
+        - if it never finds a try block, a message is displayed and the program terminates
+        - if it finds a try block, it exits the try block immediately and executes the catch block, if the `catch` block rethrows, it rethrows and the exception continues to look for a containing try block
+        - if any `catch` block deals with the code without re-throwing the exception (or a new one) the exception object is discarded and the code resumes from where the exception occurred.
+      - **every exception terminates the program unless a `catch` block handles it**
+  - Pure functions and side effects
+    - **Most functions should return a useful value, or have a side effect, *not both***
+    - https://launchschool.com/lessons/43f23069/assignments/a200fbec
+      - Pure functions:
+        - Have no side effects
+        - Given the same set of arguments, the function always returns the same value (during the functions lifetime)
+          - A functions lifetime:
+            - begins when the function is created
+            - ends when the function is destroyed
+            - nested functions have a lifetime of a single execution of the outer function
+          - The return value of a pure function depends solely on its arguments
+        - pure functions are easy to **test**
+      - Side Effects:
+        - Reassigns any non-local variable
+        - Mutates the value of any object referenced by a non-local variable
+        - Reads or Write to any data entity that is non-local (network connections, files)
+        - It raises an exception
+        - **Calls another function that has any side effects that are not contained in the calling(current) function**
+          - `console.log`
+          - `readline.question` has multiple side effects
+          - `new Date()` has a side effect (accesses the system clock)
+          - `Math.random()` (accesses the random number generator)
+            - These functions propagate their side effects to the function that *called* it.
+      - It's generally more correct to talk about function *calls* having side effects
+        - If the function can have side effects when used as intended, it is considered to have side effects.
+      - if a functions `catch` block has a side effect, the function still has a side effect
+  - Asynchronous programming (setTimeout, setInterval)
+    - setTimeout
+      - https://launchschool.com/lessons/c29f03c0/assignments/0888ceb2
+        - `setTimeout(callbackFunc, delayInMilliseconds)`
+        - Due to the way the event loop work and task queue works, setTimeout functions will not even begin to run until the program has no more code to execute.
+          - `setTimeout(callbackFunc, 0)` will execute the callback 0 milliseconds after the rest of the code finishes executing.
+        - Not an official JS spec, but most environments make it available.
+        - **Steps:**
+          - During the execution phase
+          - setTimeout is called
+          - The callback function is sent to the web api / node and begins counting down based on the delay
+          - after the delay is finished, it is pushed onto the **task queue**
+          - once the stack is clear, the **event loop** begins to push the task queue function calls onto the stack (in order).
+        - see `./let-vs-var-forLoop.js` for for loop closures
+    - setInterval
+      - https://launchschool.com/lessons/c29f03c0/assignments/c8422ffd
+        - also not part of the javascript specifications, but most environments (node, browsers) make it available.
+        - `setInterval(callbackFunc, interval)`
+          - returns an id that can be used with the `clearInterval(id)` function in order to stop the code from repeating.
+          - much like how setTimeout works, setInterval will be pushed onto the stack until all the synchronous code has finished running
+            - Steps:
+              - setInterval is executed
+              - passed to the external timer/api with the callback function and the interval
+              - after the timer has finished, the callback function gets pushed to the task queue
+              - once the stack is clear from synchronous code
+              - the event-loop begins to push functions onto the stack from the event queue
+  - (not tested?) Garbage Collection
+    - https://launchschool.com/lessons/43f23069/assignments/0eda2dba
+
+# Testing With Jest
+
+  - Testing terminology
+  - https://launchschool.com/lessons/2b72565b/assignments/d65edfe9
+  - Jest
+    - https://launchschool.com/lessons/2b72565b/assignments/376d9ba5
+  - expect and matchers (toBe and toEqual especially)
+    - https://launchschool.com/lessons/2b72565b/assignments/42526e8b
+  - SEAT approach
+    - https://launchschool.com/lessons/2b72565b/assignments/1f6be8d1
+  - Understanding code coverage
+    - https://launchschool.com/lessons/2b72565b/assignments/9b08d75e
+  - Writing tests
+    - https://launchschool.com/lessons/2b72565b/assignments/f6905bb9
+
+# Packaging Code
+  - Overview
+    - https://launchschool.com/lessons/3f433bfc/assignments
+  - Project directory layout
+    - https://launchschool.com/lessons/3f433bfc/assignments/da63e0c8
+  - what is transpilation
+    - https://launchschool.com/lessons/3f433bfc/assignments/1cb18365
+  - npm and npx
+    - https://launchschool.com/lessons/3f433bfc/assignments/2f0f28c7
+  - package.json and package-lock.json
+  - npm scripts
+    - https://launchschool.com/lessons/3f433bfc/assignments/a4c94e01
+  - packaging projects
+    - https://launchschool.com/lessons/3f433bfc/assignments/c43f8598
