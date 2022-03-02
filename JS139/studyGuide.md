@@ -263,29 +263,129 @@
 # Testing With Jest
 
   - Testing terminology
+    - Primary reason for tests is regression testing (make sure new code doesn't break old code)
+    - **Test Suite:**
+      - *the entire set of tests for the program or application*
+    - **Test** (or Spec/s):
+      - *A specific situation or context that is being tested, can contain multiple **assertions** to achieve that goal.*
+    - **Assertions** (or expectations):
+      - **the verification step that checks the program is passing the test**
   - https://launchschool.com/lessons/2b72565b/assignments/d65edfe9
   - Jest
     - https://launchschool.com/lessons/2b72565b/assignments/376d9ba5
+      - the file that contains the code to be tested must export the required code
+        - `module.exports`
+      - the testing file is usually the filename followed by `.test.js`
+        - this file must *import* the required file through `require('pathToFile/fileName.js')`
+      - run jest with `jest exampleName.test.js`
+      - if you don't specify a filename to run jest with, it will run jest for every file that ends in `.test.js`
+      - the method `describe(descriptionString, callback)` is used to group tests into logical sections (describe is optionally, but useful for test suites that have multiple tests)
+        - the callback function is where we write all our tests
+          - `test(descriptionString, callback)`
+            - the callback function of the `test` method is where we write all our *assertions*;
+        - Note that all these methods are provided automatically by jest when we run the jest program in the CLI
   - expect and matchers (toBe and toEqual especially)
     - https://launchschool.com/lessons/2b72565b/assignments/42526e8b
-  - SEAT approach
+    - Every assertion in jest begins with an `expect(actualValue)` where actualValue is the expected behavior
+        - the `expect` method returns an object that includes a bunch of different `matcher` methods that can be accessed. *matcher* methods compare the **actualValue** with the expected value. These matcher methods don't return a meaningful value, they simply inform jest of the result
+        - **`toBe(expectedValue)`**:
+          - *fails unless the actual value strictly equals (===) the expected value*
+        - **`toEqual(expectedValue)`**:
+          - *same as toBe, but can also test for object equality*
+            - compares the properties of one object with another, and if the properties and values are the same, it passes
+        - **`toThrow(typeOfError)`**: (typeOfError is optional)
+          - when calling toThrow on an `expect` object, be sure you passed the *actualValue* to the `expect` method call inside a callback function otherwise an exception will be raised before .toThrow() can detect it 
+        - **`.not.matcherMethod()`**:
+          - `.not` can be called after the expect call, but before the matcher method, to assert the opposite of the matcher method result.
+    - full list of matchers
+      - https://jestjs.io/docs/expect
+  - **SEAT approach (four steps to writing a test)**
     - https://launchschool.com/lessons/2b72565b/assignments/1f6be8d1
+      - **S**et up the necessary objects
+        - `beforeEach(callbackFunc)`
+          - beforeEach is invoked before each `test` method call is invoked. The callback function can be used to set up any necessary objects that multiple tests will use. Keep lexical scoping in mind when wishing to utilize beforeEach (make any variables available outside of the function body)
+      - **E**xecute the code against the object being tested
+      - **A**ssert the results of execution (`expect()`)
+      - **T**ear down and clean up lingering artifacts.
+        - `afterEach(callbackFunc)` is executed after each test method invocation. Useful for cleaning up files, logging information, and closing database connections.
+      - (every test needs at minimum EA)
   - Understanding code coverage
     - https://launchschool.com/lessons/2b72565b/assignments/9b08d75e
+      - `jest --coverage fileName.test.js`
+      - Code coverage is one metric for determining the vapidity of a test suite
+        - it can determine things like the percentage of functions executed during the test suite, as well as the percentage of lines that got executed in the program during testing.
   - Writing tests
     - https://launchschool.com/lessons/2b72565b/assignments/f6905bb9
 
 # Packaging Code
   - Overview
     - https://launchschool.com/lessons/3f433bfc/assignments
+      - npm
+        - Packages
+          - packages of code that can be used in developing programs, or from the command line. (sometimes both)
+          - `require('packageName')`
+            - looks inside the `node_modules` directory for a folder with the same name as the argument (or goes to the relative path if provided)
+          - Packages needed by an application/project are typically installed locally
+            - use `npm install` without the `--global` option
+            - *when installing packages, npm will attempt to install the package at the first node_modules directory, if that node_modules directory is accidentally in a parent directory, thats where it will be installed.*
+              - **If it doesn't find a node_modules directory, *then* it will create one where the command was ran.**
+          - **Run packages locally**
+            - `npx` will run the package locally (or if a local one doesn't exist, it will temp download one)
+        - package.json & package-lock.json
+          - `npm init`
+            - will initialize a package.json file based on the answers
+            - `package.json`
+              - is a configuration file written in JSON (for package dependencies)
+                - you can add dependencies by making a `dependencies` key with an object listing dependencies and (major) version numbers
+                - **Or** by running `npm install packageName --save`
+                - `devDependencies`
+                  - installed by creating a devDependencies key in the package.json file
+                  - Or `npm install packageName --save-dev`
+              - upon running `npm install` after making a package.json file
+                - the dependencies will be installed, and a `package-lock.json` file will be created
+                  - this file is a record of the specific **minor** patch versions that will work with the rest of the dependencies
+                  - **make sure package-lock.json is included in the repo**
+              - **Delete a dependency from node_modules**
+                - `npm uninstall packageName`
+              - Delete a dependency from node_modules & package.json
+                - `npm uninstall packageName --save`
+                - `npm uninstall packageName --save-dev`
+                  - to delete from devDependencies
+                - `npm prune`
+                  - when manually removing dependencies from package.json and want them to be deleted from node_modules
+        - Automating with Scripts
+          - **defined in the `scripts` object in the `package.json` file**
+          - run scripts with `npm run scriptName` where scriptName is a key value in the scripts object
+          - **Scripts are named terminal command sequences**
+            - Potential use of a script
+              - linting code
+              - running Babel
+            - Scripts will attempt to run any package locally first (even without using npx in the script value) 
+              - *if the script doesn't use npx, node will not download a temporary package if the package isn't installed in node_modules*
+      - Babel
+        - **transpilation**
+          - translates source code into other code
+          - Allows you to write JS in ES6 and convert it to an older version of the language to allow the code to run in browsers that don't support the superset of the language (ES6)
   - Project directory layout
     - https://launchschool.com/lessons/3f433bfc/assignments/da63e0c8
-  - what is transpilation
-    - https://launchschool.com/lessons/3f433bfc/assignments/1cb18365
-  - npm and npx
-    - https://launchschool.com/lessons/3f433bfc/assignments/2f0f28c7
-  - package.json and package-lock.json
-  - npm scripts
-    - https://launchschool.com/lessons/3f433bfc/assignments/a4c94e01
+      - name directories using lowercase letters, digits, underscores, and hyphens **(no spaces)**
+      - make sure you .gitignore any node_modules
+      - `project_directory`
+        - `lib`
+          - code files in the lib directory
+        - `test`
+          - test code in a test directory
+        - `assets` (if used)
+          - an assets directory contains assets needed
+          - `images`
+          - `javascript`
+          - `stylesheets`
   - packaging projects
     - https://launchschool.com/lessons/3f433bfc/assignments/c43f8598
+      - have a package.json file
+        - make sure **name, version, and main** fields are filled out
+          - `main`
+            - identifies the file that JS will load when a package is imported
+            - *make sure that this file is exporting `module.exports` any files that are used in the package*
+      - ensure the directory nesting and names are standard
+      - `npm publish --access public`
